@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Internet Ltd - Buy Bundles</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0000FF">
+    <style>
+        body { font-family: Arial; max-width: 400px; margin: auto; padding: 20px; }
+        button { background: #0000FF; color: white; padding: 10px; width: 100%; border: none; }
+        #status { color: green; }
+        select, input { width: 100%; padding: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Easy Internet Ltd</h1>
+    <p>Cape Coast & UCC WiFi Bundles via MoMo</p>
+    <select id="bundle">
+        <option value="daily">Daily 1GB - GHS 5</option>
+        <option value="weekly">Weekly 7GB - GHS 25</option>
+        <option value="monthly">Monthly 50GB - GHS 100</option>
+    </select>
+    <input type="tel" id="phone" placeholder="MoMo Phone Number" required>
+    <button onclick="buyBundle()">Purchase via MoMo</button>
+    <p id="status"></p>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+        async function buyBundle() {
+            const bundle = document.getElementById('bundle').value;
+            const phone = document.getElementById('phone').value;
+            const status = document.getElementById('status');
+            if (!navigator.onLine) {
+                status.textContent = `Offline: Simulated purchase for ${bundle} on ${phone}. Ref: OFF-${Date.now()}. Sync later.`;
+                return;
+            }
+            // Real MoMo: POST to your backend /pay
+            try {
+                const res = await fetch('/pay', { method: 'POST', body: JSON.stringify({bundle, phone}), headers: {'Content-Type': 'application/json'} });
+                const data = await res.json();
+                status.textContent = `Payment requested! Check MoMo for ${data.ref}.`;
+            } catch(e) {
+                status.textContent = 'Error: Check connection.';
+            }
+        }
+    </script>
+</body>
+</html>
