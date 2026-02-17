@@ -1,0 +1,9 @@
+{
+    "name": "Easy Internet Bundles",
+    "short_name": "EasyNet",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#0000FF",
+    "icons": [{"src": "icon-192.png", "sizes": "192x192", "type": "image/png"}]
+}
